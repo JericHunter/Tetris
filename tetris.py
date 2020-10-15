@@ -13,6 +13,18 @@ block_size = 30
 top_left_x = (screen_width - game_width) // 2
 top_left_y = screen_height - game_height
 
+#Creating Shape Formats To Convert
+
+S_Shape_Format = [[\'.....\',
+      \'.....\',
+      \'..00.\',
+      \'.00..\',
+      \'.....\'],
+     [\'.....\',
+      \'..0..\',
+      \'..00.\',
+      \'...0.\',
+      \'.....\']]
 
 class Tetris(object):
     rows = 20  # y
