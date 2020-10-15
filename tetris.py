@@ -141,3 +141,18 @@ def createGrid(staticPositions={}):
                 c = staticPositions[(j,i)]
                 grid[i][j] = c
     return grid
+
+def convertShapeFormat(shape):
+    blockPositions = []
+    format = shape.shape[shape.rotation % len(shape.shape)]
+
+    for i, line in enumerate(format):
+        row = list(line)
+        for j, col in enumerate(row):
+            if col == \'0\':
+                blockPositions.append((shape.x + j, shape.y + i))
+
+    for i, pos in enumerate(blockPositions):
+        blockPositions[i] = (pos[0] - 2, pos[1] - 4)
+
+    return blockPositions
