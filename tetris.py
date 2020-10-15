@@ -48,6 +48,12 @@ I_Shape_Format = [[\'..0..\',
       \'.....\',
       \'.....\']]
 
+O_Shape_Format = [[\'.....\',
+      \'.....\',
+      \'.00..\',
+      \'.00..\',
+      \'.....\']]
+
 class Tetris(object):
     rows = 20  # y
     columns = 10  # x
