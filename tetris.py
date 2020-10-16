@@ -14,108 +14,108 @@ top_left_x = (screen_width - game_width) // 2
 top_left_y = screen_height - game_height
 
 #Creating Shape Formats To Convert
+S_Shape_Format = [['.....',
+      '.....',
+      '..00.',
+      '.00..',
+      '.....'],
+     ['.....',
+      '..0..',
+      '..00.',
+      '...0.',
+      '.....']]
 
-S_Shape_Format = [[\'.....\',
-      \'.....\',
-      \'..00.\',
-      \'.00..\',
-      \'.....\'],
-     [\'.....\',
-      \'..0..\',
-      \'..00.\',
-      \'...0.\',
-      \'.....\']]
 
-Z_Shape_Format = [[\'.....\',
-      \'.....\',
-      \'.00..\',
-      \'..00.\',
-      \'.....\'],
-     [\'.....\',
-      \'..0..\',
-      \'.00..\',
-      \'.0...\',
-      \'.....\']]
+Z_Shape_Format = [['.....',
+      '.....',
+      '.00..',
+      '..00.',
+      '.....'],
+     ['.....',
+      '..0..',
+      '.00..',
+      '.0...',
+      '.....']]
 
-I_Shape_Format = [[\'..0..\',
-      \'..0..\',
-      \'..0..\',
-      \'..0..\',
-      \'.....\'],
-     [\'.....\',
-      \'0000.\',
-      \'.....\',
-      \'.....\',
-      \'.....\']]
+I_Shape_Format = [['..0..',
+      '..0..',
+      '..0..',
+      '..0..',
+      '.....'],
+     ['.....',
+      '0000.',
+      '.....',
+      '.....',
+      '.....']]
 
-O_Shape_Format = [[\'.....\',
-      \'.....\',
-      \'.00..\',
-      \'.00..\',
-      \'.....\']]
+O_Shape_Format = [['.....',
+      '.....',
+      '.00..',
+      '.00..',
+      '.....']]
 
-J_Shape_Format = [[\'.....\',
-      \'.0...\',
-      \'.000.\',
-      \'.....\',
-      \'.....\'],
-     [\'.....\',
-      \'..00.\',
-      \'..0..\',
-      \'..0..\',
-      \'.....\'],
-     [\'.....\',
-      \'.....\',
-      \'.000.\',
-      \'...0.\',
-      \'.....\'],
-     [\'.....\',
-      \'..0..\',
-      \'..0..\',
-      \'.00..\',
-      \'.....\']]
+J_Shape_Format = [['.....',
+      '.0...',
+      '.000.',
+      '.....',
+      '.....'],
+     ['.....',
+      '..00.',
+      '..0..',
+      '..0..',
+      '.....'],
+     ['.....',
+      '.....',
+      '.000.',
+      '...0.',
+      '.....'],
+     ['.....',
+      '..0..',
+      '..0..',
+      '.00..',
+      '.....']]
 
-L_Shape_Format = [[\'.....\',
-      \'...0.\',
-      \'.000.\',
-      \'.....\',
-      \'.....\'],
-     [\'.....\',
-      \'..0..\',
-      \'..0..\',
-      \'..00.\',
-      \'.....\'],
-     [\'.....\',
-      \'.....\',
-      \'.000.\',
-      \'.0...\',
-      \'.....\'],
-     [\'.....\',
-      \'.00..\',
-      \'..0..\',
-      \'..0..\',
-      \'.....\']]
+L_Shape_Format = [['.....',
+      '...0.',
+      '.000.',
+      '.....',
+      '.....'],
+     ['.....',
+      '..0..',
+      '..0..',
+      '..00.',
+      '.....'],
+     ['.....',
+      '.....',
+      '.000.',
+      '.0...',
+      '.....'],
+     ['.....',
+      '.00..',
+      '..0..',
+      '..0..',
+      '.....']]
 
-T_Shape_Format = [[\'.....\',
-      \'..0..\',
-      \'.000.\',
-      \'.....\',
-      \'.....\'],
-     [\'.....\',
-      \'..0..\',
-      \'..00.\',
-      \'..0..\',
-      \'.....\'],
-     [\'.....\',
-      \'.....\',
-      \'.000.\',
-      \'..0..\',
-      \'.....\'],
-     [\'.....\',
-      \'..0..\',
-      \'.00..\',
-      \'..0..\',
-      \'.....\']]
+T_Shape_Format = [['.....',
+      '..0..',
+      '.000.',
+      '.....',
+      '.....'],
+     ['.....',
+      '..0..',
+      '..00.',
+      '..0..',
+      '.....'],
+     ['.....',
+      '.....',
+      '.000.',
+      '..0..',
+      '.....'],
+     ['.....',
+      '..0..',
+      '.00..',
+      '..0..',
+      '.....']]
 
 shapes = [S_Shape_Format, Z_Shape_Format, I_Shape_Format, O_Shape_Format, J_Shape_Format, L_Shape_Format, T_Shape_Format]
 shapeColors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0), (0, 0, 255), (128, 0, 128)]
@@ -149,7 +149,7 @@ def convertShapeFormat(shape):
     for i, line in enumerate(format):
         row = list(line)
         for j, col in enumerate(row):
-            if col == \'0\':
+            if col == '0':
                 blockPositions.append((shape.x + j, shape.y + i))
 
     for i, pos in enumerate(blockPositions):
@@ -181,6 +181,12 @@ def getShape():
 
     return Piece(5, 0, random.choice(shapes))
 
+def drawTextMiddle(text, size, color, surface):
+    font = pygame.font.SysFont('arial', size, bold=True)
+    label = font.render(text, 1, color)
+
+    surface.blit(label, (top_left_x + game_width/2 - (label.get_width() / 2), top_left_y + gane_height/2 - label.get_height()/2))
+
 def drawGrid(surface, row, col):
     sx = top_left_x
     sy = top_left_y
@@ -210,6 +216,23 @@ def clearRows(grid, locked):
             if y < ind:
                 newKey = (x, y + inc)
                 locked[newKey] = locked.pop(key)
+
+def drawNextShape(shape, surface):
+    font = pygame.font.SysFont('arial', 30)
+    label = font.render('Next', 1, (255,255,255))
+
+    sx = top_left_x + game_width + 50
+    sy = top_left_y + game_height/2 - 100
+    format = shape.shape[shape.rotation % len(shape.shape)]
+
+    for i, line in enumerate(format):
+        row = list(line)
+        for j, column in enumerate(row):
+            if column == '0':
+                pygame.draw.rect(surface, shape.color, (sx + j*30, sy + i*30, 30, 30), 0)
+
+    surface.blit(label, (sx + 10, sy- 30))
+
 def main():
     global grid
 
