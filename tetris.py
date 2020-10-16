@@ -222,4 +222,46 @@ def main():
     next_piece = getShape()
     clock = pygame.time.Clock()
     fall_time = 0
-    
+
+    while run:
+        fall_speed = 0.27
+
+        grid = creatGrid(blockPositions)
+        fall_time += clock.get_rawtime()
+        clock.tick()
+
+        # Piece falling logic
+        if fall_time/1000 >= fall_speed:
+            fall_time = 0
+            current_piece.y += 1
+            if not (validSpace(current_piece, grid)) and current_piece.y > 0:
+                current_piece.y -= 1
+                change_piece = True
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+                pygame.display.quit()
+                quit()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    current_piece.x -= 1
+                    if not validSpace(current_piece, grid):
+                        current_piece.x += 1
+
+                elif event.key == pygame.K_RIGHT:
+                    current_piece.x += 1
+                    if not validSpace(current_piece, grid):
+                        current_piece.x -= 1
+                elif event.key == pygame.K_UP:
+                    # rotate shape
+                    current_piece.rotation = current_piece.rotation + 1 % len(current_piece.shape)
+                    if not validSpace(current_piece, grid):
+                        current_piece.rotation = current_piece.rotation - 1 % len(current_piece.shape)
+
+                if event.key == pygame.K_DOWN:
+                    # move shape down
+                    current_piece.y += 1
+                    if not validSpace(current_piece, grid):
+                        current_piece.y -= 1
