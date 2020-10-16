@@ -14,7 +14,7 @@ top_left_x = (screen_width - game_width) // 2
 top_left_y = screen_height - game_height
 
 #Creating Shape Formats To Convert
-S_Shape_Format = [['.....',
+screen_Shape_Format = [['.....',
       '.....',
       '..00.',
       '.00..',
@@ -117,10 +117,10 @@ T_Shape_Format = [['.....',
       '..0..',
       '.....']]
 
-shapes = [S_Shape_Format, Z_Shape_Format, I_Shape_Format, O_Shape_Format, J_Shape_Format, L_Shape_Format, T_Shape_Format]
+shapes = [screen_Shape_Format, Z_Shape_Format, I_Shape_Format, O_Shape_Format, J_Shape_Format, L_Shape_Format, T_Shape_Format]
 shapeColors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0), (0, 0, 255), (128, 0, 128)]
 
-class Tetris(object):
+class Piece(object):
     rows = 20  # y
     columns = 10  # x
 
@@ -185,15 +185,15 @@ def drawTextMiddle(text, size, color, surface):
     font = pygame.font.SysFont('arial', size, bold=True)
     label = font.render(text, 1, color)
 
-    surface.blit(label, (top_left_x + game_width/2 - (label.get_width() / 2), top_left_y + gane_height/2 - label.get_height()/2))
+    surface.blit(label, (top_left_x + game_width/2 - (label.get_width() / 2), top_left_y + game_height/2 - label.get_height()/2))
 
 def drawGrid(surface, row, col):
     sx = top_left_x
     sy = top_left_y
     for i in range(row):
-        pygame.draw.line(surface, (128,128,128), (sx, sy+ i*30), (sx + game_width, sy + i * 30))
+        pygame.draw.line(surface, (1,128,128), (sx, sy+ i*30), (sx + game_width, sy + i * 30))
         for j in range(col):
-            pygame.draw.line(surface, (128,128,128), (sx + j * 30, sy), (sx + j * 30, sy + game_height))
+            pygame.draw.line(surface, (255,255,255), (sx + j * 30, sy), (sx + j * 30, sy + game_height))
 
 def clearRows(grid, locked):
     # need to see if row is clear the shift every other row above down one
@@ -245,7 +245,7 @@ def drawWindow(surface):
 
     # draw grid and border
     drawGrid(surface, 20, 10)
-    pygame.draw.rect(surface, (255, 0, 0), (top_left_x, top_left_y, game_width, game_height), 5)
+    pygame.draw.rect(surface, (0, 0, 230), (top_left_x, top_left_y, game_width, game_height), 5)
 
 def main():
     global grid
@@ -263,7 +263,7 @@ def main():
     while run:
         fall_speed = 0.27
 
-        grid = creatGrid(blockPositions)
+        grid = createGrid(blockPositions)
         fall_time += clock.get_rawtime()
         clock.tick()
 
@@ -302,3 +302,56 @@ def main():
                     current_piece.y += 1
                     if not validSpace(current_piece, grid):
                         current_piece.y -= 1
+
+        shape_pos = convertShapeFormat(current_piece)
+
+        # add piece to the grid for drawing
+        for i in range(len(shape_pos)):
+            x, y = shape_pos[i]
+            if y > -1:
+                grid[y][x] = current_piece.color
+
+        # IF PIECE HIT GROUND
+        if change_piece:
+            for pos in shape_pos:
+                p = (pos[0], pos[1])
+                blockPositions[p] = current_piece.color
+            current_piece = next_piece
+            next_piece = getShape()
+            change_piece = False
+
+            # call four times to check for multiple clear rows
+            clearRows(grid, blockPositions)
+
+        drawWindow(win)
+        drawNextShape(next_piece, win)
+        pygame.display.update()
+
+        # Check if user lost
+        if checkLost(blockPositions):
+            run = False
+
+    drawTextMiddle("You Lost", 40, (255,255,255), win)
+    pygame.display.update()
+    pygame.time.delay(2000)
+
+
+def mainMenu():
+    run = True
+    while run:
+        win.fill((0,0,0))
+        drawTextMiddle('Press any key to begin.', 60, (255, 255, 255), win)
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+
+            if event.type == pygame.KEYDOWN:
+                main()
+    pygame.quit()
+
+
+win = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption('Tetris')
+
+mainMenu()  # start
