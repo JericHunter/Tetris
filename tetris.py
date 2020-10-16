@@ -210,3 +210,16 @@ def clearRows(grid, locked):
             if y < ind:
                 newKey = (x, y + inc)
                 locked[newKey] = locked.pop(key)
+def main():
+    global grid
+
+    blockPositions = {}
+    grid = createGrid(blockPositions)
+
+    change_piece = False
+    run = True
+    current_piece = getShape()
+    next_piece = getShape()
+    clock = pygame.time.Clock()
+    fall_time = 0
+    
