@@ -232,6 +232,20 @@ def drawNextShape(shape, surface):
                 pygame.draw.rect(surface, shape.color, (sx + j*30, sy + i*30, 30, 30), 0)
 
     surface.blit(label, (sx + 10, sy- 30))
+def drawWindow(surface):
+    surface.fill((0,0,0))
+    font = pygame.font.SysFont('arial', 60)
+    label = font.render('TETRIS', 1, (255,255,255))
+
+    surface.blit(label, (top_left_x + game_width / 2 - (label.get_width() / 2), 30))
+
+    for i in range(len(grid)):
+        for j in range(len(grid[i])):
+            pygame.draw.rect(surface, grid[i][j], (top_left_x + j* 30, top_left_y + i * 30, 30, 30), 0)
+
+    # draw grid and border
+    drawGrid(surface, 20, 10)
+    pygame.draw.rect(surface, (255, 0, 0), (top_left_x, top_left_y, game_width, game_height), 5)
 
 def main():
     global grid
@@ -264,7 +278,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
-                pygame.display.quit()
+                pygame.disgame.quit()
                 quit()
 
             if event.type == pygame.KEYDOWN:
