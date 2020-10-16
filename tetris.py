@@ -118,7 +118,7 @@ T_Shape_Format = [[\'.....\',
       \'.....\']]
 
 shapes = [S_Shape_Format, Z_Shape_Format, I_Shape_Format, O_Shape_Format, J_Shape_Format, L_Shape_Format, T_Shape_Format]
-shape_colors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0), (0, 0, 255), (128, 0, 128)]
+shapeColors = [(0, 255, 0), (255, 0, 0), (0, 255, 255), (255, 255, 0), (255, 165, 0), (0, 0, 255), (128, 0, 128)]
 
 class Tetris(object):
     rows = 20  # y
@@ -128,7 +128,7 @@ class Tetris(object):
         self.x = col
         self.y = row
         self.shape = shape
-        self.color = shape_colors[shapes.index(shape)]
+        self.color = shapeColors[shapes.index(shape)]
         self.rotation = 0
 
 
@@ -168,3 +168,15 @@ def validSpace(shape, grid):
                 return False
 
     return True
+def checkLost(positions):
+    for pos in positions:
+        x, y = pos
+        if y < 1:
+            return True
+    return False
+
+
+def getShape():
+    global shapes, shapeColors
+
+    return Piece(5, 0, random.choice(shapes))
