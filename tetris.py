@@ -124,8 +124,8 @@ class Tetris(object):
     rows = 20  # y
     columns = 10  # x
 
-    def __init__(self, col, row, shape):
-        self.x = col
+    def __init__(self, column, row, shape):
+        self.x = column
         self.y = row
         self.shape = shape
         self.color = shapeColors[shapes.index(shape)]
@@ -180,3 +180,11 @@ def getShape():
     global shapes, shapeColors
 
     return Piece(5, 0, random.choice(shapes))
+
+def drawGrid(surface, row, col):
+    sx = top_left_x
+    sy = top_left_y
+    for i in range(row):
+        pygame.draw.line(surface, (128,128,128), (sx, sy+ i*30), (sx + game_width, sy + i * 30))
+        for j in range(col):
+            pygame.draw.line(surface, (128,128,128), (sx + j * 30, sy), (sx + j * 30, sy + game_height))
